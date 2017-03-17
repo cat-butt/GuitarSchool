@@ -1,0 +1,9 @@
+.idea
+build
+classes
+*.class
+.gradle
+*.bin
+*.jar
+*.lock
+*.iml
