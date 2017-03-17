@@ -23,46 +23,18 @@ public class GuitarSchool extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-//        final Image imageGuitar = new Image("guitar.GIF");
-//        final Image imagePiano = new Image("piano.GIF");
-//
-//        Canvas guitarCanvas = new Canvas(imageGuitar.getWidth(), imageGuitar.getHeight());
-//        final GraphicsContext gc = guitarCanvas.getGraphicsContext2D();
-//        gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
-//        gc.fillOval(100, 100, 50, 50);
-//        guitarCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                System.out.println(event.getX() + "        " + event.getY());
-//                gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
-//                gc.fillOval(event.getX() - 10, event.getY() - 10, 20, 20);
-//            }
-//        });
-//
-//        Canvas pianoCanvas = new Canvas(imagePiano.getWidth(), imagePiano.getHeight());
-//        final GraphicsContext gc2 = pianoCanvas.getGraphicsContext2D();
-//        gc2.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
-//        gc2.fillOval(100, 100, 50, 50);
-//        pianoCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                System.out.println(event.getX() + "        " + event.getY());
-//                gc2.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
-//                gc2.fillOval(event.getX() - 10, event.getY() - 10, 20, 20);
-//            }
-//        });
+        GuitarCanvas guitarCanvase = new GuitarCanvas();
 
-        GuitarCanvas gCanvase = new GuitarCanvas();
+        PianoCanvas pianoCanvas = new PianoCanvas();
 
         Group root = new Group();
         VBox vBox = new VBox();
-//        vBox.getChildren().addAll(guitarCanvas, pianoCanvas, gCanvase);
-        vBox.getChildren().addAll(gCanvase);
+        vBox.getChildren().addAll(guitarCanvase, pianoCanvas);
         root.getChildren().add(vBox);
 
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("Hello...");
+        primaryStage.setTitle("GuitarSchool");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
