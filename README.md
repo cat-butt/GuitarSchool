@@ -1,6 +1,6 @@
-# README #
+# GUITAR SCHOOL #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This code was written in 2003 with Notepad. The initial commit is a quick and dirty port from AWT to JavaFX. Much work to be done.
 
 ### What is this repository for? ###
 
