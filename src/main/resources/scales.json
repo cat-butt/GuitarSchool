@@ -1,0 +1,46 @@
+{
+  "CATALOG": {
+    "SCALE-FAMILY": [
+      {
+        "FAMILY-NAME": "Major",
+        "SCALE": [
+          {
+            "SCALE-NAME": "Lydian",
+            "STEPS": "2221221"
+          },
+          {
+            "SCALE-NAME": "Ionian",
+            "STEPS": "2212221"
+          },
+          {
+            "SCALE-NAME": "Mixolydian",
+            "STEPS": "2212212"
+          },
+          {
+            "SCALE-NAME": "Dorian",
+            "STEPS": "2122212"
+          },
+          {
+            "SCALE-NAME": "Aolean",
+            "STEPS": "2122122"
+          },
+          {
+            "SCALE-NAME": "xxxxxxx",
+            "STEPS": "1222122"
+          },
+          {
+            "SCALE-NAME": "yyyyyyy",
+            "STEPS": "1221222"
+          }
+        ]
+      },
+      {
+        "FAMILY-NAME": "Melodic Minor",
+        "SCALE": {
+          "SCALE-NAME": "Melodic Minor",
+          "STEPS": "2122221"
+        }
+      }
+    ]
+  }
+}

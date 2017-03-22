@@ -23,5 +23,6 @@ dependencies {
 //    compile group: 'org.apache.pivot', name: 'pivot-core', version: '2.0.4'
 //    compile group: 'org.apache.pivot', name: 'pivot-wtk-terra', version: '2.0.4'
 
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7"
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
