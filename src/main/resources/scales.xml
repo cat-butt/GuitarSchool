@@ -1,0 +1,40 @@
+<CATALOG>
+    <SCALE-FAMILY>
+        <FAMILY-NAME>Major</FAMILY-NAME>
+        <SCALE>
+            <SCALE-NAME>Lydian</SCALE-NAME>
+            <STEPS>2221221</STEPS>
+        </SCALE>
+        <SCALE>
+            <SCALE-NAME>Ionian</SCALE-NAME>
+            <STEPS>2212221</STEPS>
+        </SCALE>
+        <SCALE>
+            <SCALE-NAME>Mixolydian</SCALE-NAME>
+            <STEPS>2212212</STEPS>
+        </SCALE>
+        <SCALE>
+            <SCALE-NAME>Dorian</SCALE-NAME>
+            <STEPS>2122212</STEPS>
+        </SCALE>
+        <SCALE>
+            <SCALE-NAME>Aolean</SCALE-NAME>
+            <STEPS>2122122</STEPS>
+        </SCALE>
+        <SCALE>
+            <SCALE-NAME>xxxxxxx</SCALE-NAME>
+            <STEPS>1222122</STEPS>
+        </SCALE>
+        <SCALE>
+            <SCALE-NAME>yyyyyyy</SCALE-NAME>
+            <STEPS>1221222</STEPS>
+        </SCALE>
+    </SCALE-FAMILY>
+    <SCALE-FAMILY>
+        <FAMILY-NAME>Melodic Minor</FAMILY-NAME>
+        <SCALE>
+            <SCALE-NAME>Melodic Minor</SCALE-NAME>
+            <STEPS>2122221</STEPS>
+        </SCALE>
+    </SCALE-FAMILY>
+</CATALOG>
