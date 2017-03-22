@@ -55,4 +55,15 @@ public class Scale {
         }
         this.steps = "Invalid Steps";
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Scale{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", familyName='").append(familyName).append('\'');
+        sb.append(", steps='").append(steps).append('\'');
+        sb.append(", stepList=").append(stepList);
+        sb.append('}');
+        return sb.toString();
+    }
 }
