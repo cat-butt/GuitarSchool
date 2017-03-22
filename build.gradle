@@ -9,6 +9,14 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.jackson.guitar.GuitarSchool'
+    }
+    baseName = 'GuitarSchool'
+    version = '0.0.1'
+}
+
 dependencies {
 
 //    compile group: 'org.apache.pivot', name: 'pivot-wtk', version: '2.0.4'

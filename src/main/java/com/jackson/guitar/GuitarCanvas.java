@@ -80,13 +80,9 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
     }
 
     public void setScale(int rootNote) {
-        try {
-            ScaleFinder scaleFinder = new ScaleFinder();
-            scaleFinder.setRoot(rootNote);
-            scale = scaleFinder.getScale();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        ScaleFinder scaleFinder = new ScaleFinder();
+        scaleFinder.setRoot(rootNote);
+        scale = scaleFinder.getScale();
         root = 0;
     }
 
@@ -97,7 +93,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         Note note = getNoteFromPosition(event.getX(), event.getY());
-        if( note != null ) {
+        if (note != null) {
             setScale(note.getNote());
             new FretboardMapper(getGraphicsContext2D(), note);
         }
@@ -140,7 +136,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                     root = rootNote.getNote();
 
                 currentPos = root;
-                System.out.println( "root:  " + root );
+                System.out.println("root:  " + root);
             }
 
             Color rootColor = new Color(1.0, 0.0, 0.0, .5);
