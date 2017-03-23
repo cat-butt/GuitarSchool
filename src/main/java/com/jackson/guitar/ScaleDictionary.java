@@ -1,7 +1,6 @@
 package com.jackson.guitar;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,15 +16,31 @@ public class ScaleDictionary {
     private ArrayList<Scale> scales = new ArrayList<>();
     private HashMap<String, Scale> scalesMap = new HashMap<>();
 
-    public ArrayList<Scale> getScales() {
-        return scales;
-    }
-
     public void setScales(ArrayList<Scale> scales) {
         this.scales = scales;
         for( Scale scale : scales) {
             this.scalesMap.put(scale.getName(), scale);
         }
+    }
+
+    @JsonIgnore
+    public ArrayList<String> getScaleListUnderFamily(String familyName) {
+        ArrayList<String> scaleList = new ArrayList<>();
+        for( Scale s : scales) {
+            if(s.getFamilyName().equals(familyName))
+                scaleList.add(s.getName());
+        }
+        return scaleList;
+    }
+
+    @JsonIgnore
+    public ArrayList<String> getFamilyList() {
+        ArrayList<String> familyList = new ArrayList<>();
+        for( Scale s : scales ) {
+            if( !familyList.contains(s.getFamilyName()))
+                familyList.add(s.getFamilyName());
+        }
+        return familyList;
     }
 
     @JsonIgnore
@@ -35,6 +50,12 @@ public class ScaleDictionary {
         }
         return scalesMap.get(name).getStepList();
     }
+
+//    @JsonIgnore
+//    public HashMap<String, Scale> getScalesMap() {
+//        return scalesMap;
+//    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ScaleDictionary{");

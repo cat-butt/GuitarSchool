@@ -34,6 +34,82 @@
       "name": "Locrian",
       "steps": "1221222",
       "familyName": "Major"
+    },
+    {
+      "name": "Melodic Minor",
+      "steps": "2122221",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "MM 2nd Mode",
+      "steps": "1222212",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "Lydian Augmented",
+      "steps": "2222121",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "Lydian Dominant",
+      "steps": "2221212",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "Hindu",
+      "steps": "2212122",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "Locrian",
+      "steps": "2121222",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "Altered",
+      "steps": "1212222",
+      "familyName": "Melodic Minor"
+    },
+    {
+      "name": "Half-Whole",
+      "steps": "12121212",
+      "familyName": "Synthetic"
+    },
+    {
+      "name": "Whole-Half",
+      "steps": "12121212",
+      "familyName": "Synthetic"
+    },
+
+    {
+      "name": "Whole",
+      "steps": "222222",
+      "familyName": "Synthetic"
+    },
+    {
+      "name": "Augmented",
+      "steps": "313131",
+      "familyName": "Synthetic"
+    },
+    {
+      "name": "Half-Whole",
+      "steps": "12121212",
+      "familyName": "Synthetic"
+    },
+    {
+      "name": "Major Pentatonic",
+      "steps": "22323",
+      "familyName": "Pentatonic"
+    },
+    {
+      "name": "Minor Pentatonic",
+      "steps": "32232",
+      "familyName": "Pentatonic"
+    },
+    {
+      "name": "Dom Pentatonic",
+      "steps": "23232",
+      "familyName": "Pentatonic"
     }
   ]
 }
