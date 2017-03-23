@@ -4,19 +4,11 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -27,7 +19,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     private Image imageGuitar = new Image("guitar.GIF");
 
-    private final int FRETBOARD[][] =
+    private static final int fretboard[][] =
             {{4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3},
                     {9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8},
                     {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1},
@@ -35,11 +27,11 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                     {11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
                     {4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3}};
 
-    private final int coordX[] = {33, 101, 165, 226, 283, 337, 388, 436, 481,
+    private static final int coordX[] = {33, 101, 165, 226, 283, 337, 388, 436, 481,
             524, 565, 603, 639, 673, 705, 735, 764, 791,
             817, 841, 863, 885, 905, 924};
 
-    private final int coordY[] = {100, 83, 66, 49, 32, 15};
+    private static final int coordY[] = {100, 83, 66, 49, 32, 15};
 
     private ArrayList scale = null;
 
@@ -106,7 +98,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 //                System.out.println(rect);
 //                if( noteRect[i][j].contains(x,y)) {
                 if (rect.contains(x, y)) {
-                    return new Note(FRETBOARD[i][j + 1]);
+                    return new Note(fretboard[i][j + 1]);
                 }
             }
         }
@@ -152,7 +144,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                         if (j != 0) {
                             /** Determine color of note*/
                             if (string[i]) {
-                                if (FRETBOARD[i][j] == root)
+                                if (fretboard[i][j] == root)
                                     g.setFill(Color.RED); //light blue
 //                                g.setColor(rootColor); //light blue
                                 else {
@@ -173,7 +165,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                             int x1 = coordX[j - 1];
                             int x2 = coordX[j];
                             int y1 = coordY[i];
-                            String note = ScaleFinder.NOTE_NAMES[FRETBOARD[i][j]];
+                            String note = ScaleFinder.NOTE_NAMES[fretboard[i][j]];
                             if (note.length() >= 2)
                                 note = note.substring(0, 2);
 //                            double xText = x1+(x2-x1)/2.0-fm.stringWidth(note)/2.0;
@@ -185,7 +177,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                             int x = coordX[0] - 14;
                             int y = coordY[i];
                             if (string[i]) {
-//                                if(FRETBOARD[i][j] == root)
+//                                if(fretboard[i][j] == root)
 //                                    g.setColor(rootColor);
 //                                else
 //                                    g.setColor(Color.yellow);
@@ -200,7 +192,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
         private boolean positionFretted(int i, int j) {
             for (int k = 0; k < notes.length; k++) {
-                if (notes[k] == FRETBOARD[i][j]) {
+                if (notes[k] == fretboard[i][j]) {
                     currentPos = pos[k];
                     return true;
                 }
