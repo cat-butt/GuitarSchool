@@ -19,6 +19,8 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     private Image imageGuitar = new Image("guitar.GIF");
 
+    private ScaleFinder scaleFinder = new ScaleFinder();
+
     private static final int fretboard[][] =
             {{4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3},
                     {9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8},
@@ -63,7 +65,9 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
     }
 
     public GuitarCanvas() {
-        setScale(0);
+        scale = scaleFinder.getScale();
+        setScaleRoot(0);
+        setScaleType("Ionian");
         setWidth(imageGuitar.getWidth());
         setHeight(imageGuitar.getHeight());
         GraphicsContext gc = getGraphicsContext2D();
@@ -71,11 +75,22 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         setOnMouseClicked(this);
     }
 
-    public void setScale(int rootNote) {
-        ScaleFinder scaleFinder = new ScaleFinder();
+    public void setScaleRoot(int rootNote) {
+        GraphicsContext gc = getGraphicsContext2D();
         scaleFinder.setRoot(rootNote);
         scale = scaleFinder.getScale();
-        root = 0;
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
+        new FretboardMapper(getGraphicsContext2D(), new Note(rootNote));
+    }
+
+    public void setScaleType(String scaleType) {
+        GraphicsContext gc = getGraphicsContext2D();
+        scaleFinder.setScaleName(scaleType);
+        scale = scaleFinder.getScale();
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
+        new FretboardMapper(getGraphicsContext2D(), new Note(root));
     }
 
     @Override
@@ -86,7 +101,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         Note note = getNoteFromPosition(event.getX(), event.getY());
         if (note != null) {
-            setScale(note.getNote());
+            setScaleRoot(note.getNote());
             new FretboardMapper(getGraphicsContext2D(), note);
         }
     }
