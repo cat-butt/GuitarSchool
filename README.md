@@ -2,9 +2,9 @@
 
 This code was written in 2003 with Notepad. The initial commit is a quick and dirty port from AWT to JavaFX. Much work to be done.
 
-### What is this repository for? ###
+### How do I run? ###
 
-* Quick summary
+* todo
 * Version
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
@@ -25,5 +25,5 @@ This code was written in 2003 with Notepad. The initial commit is a quick and di
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
+* cat-butt
 * Other community or team contact
