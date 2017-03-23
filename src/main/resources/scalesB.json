@@ -9,6 +9,31 @@
       "name": "Ionian",
       "steps": "2212221",
       "familyName": "Major"
+    },
+    {
+      "name": "Mixolydian",
+      "steps": "2212212",
+      "familyName": "Major"
+    },
+    {
+      "name": "Dorian",
+      "steps": "2122212",
+      "familyName": "Major"
+    },
+    {
+      "name": "Aeolian",
+      "steps": "2122122",
+      "familyName": "Major"
+    },
+    {
+      "name": "Pythagorean",
+      "steps": "1222122",
+      "familyName": "Major"
+    },
+    {
+      "name": "Locrian",
+      "steps": "1221222",
+      "familyName": "Major"
     }
   ]
 }

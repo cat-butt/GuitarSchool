@@ -1,9 +1,12 @@
 package com.jackson.guitar;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by jackson on 3/22/2017.
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 public class ScaleDictionary {
 
     private ArrayList<Scale> scales = new ArrayList<>();
+    private HashMap<String, Scale> scalesMap = new HashMap<>();
 
     public ArrayList<Scale> getScales() {
         return scales;
@@ -19,8 +23,18 @@ public class ScaleDictionary {
 
     public void setScales(ArrayList<Scale> scales) {
         this.scales = scales;
+        for( Scale scale : scales) {
+            this.scalesMap.put(scale.getName(), scale);
+        }
     }
 
+    @JsonIgnore
+    public ArrayList<Integer> getScale(String name) {
+        if( !scalesMap.containsKey(name) ) {
+            return new ArrayList<>();
+        }
+        return scalesMap.get(name).getStepList();
+    }
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ScaleDictionary{");
@@ -74,6 +88,11 @@ public class ScaleDictionary {
                 }
             }
             this.steps = "Invalid Steps";
+        }
+
+        @JsonIgnore
+        public ArrayList<Integer> getStepList() {
+            return stepList;
         }
 
         @Override

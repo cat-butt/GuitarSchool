@@ -1,0 +1,14 @@
+{
+  "scales": [
+    {
+      "name": "Lydian",
+      "steps": "2221221",
+      "familyName": "Major"
+    },
+    {
+      "name": "Ionian",
+      "steps": "2212221",
+      "familyName": "Major"
+    }
+  ]
+}
