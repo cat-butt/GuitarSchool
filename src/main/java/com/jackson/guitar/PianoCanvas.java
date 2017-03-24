@@ -15,11 +15,19 @@ import java.util.HashSet;
  * Created by jackson on 3/17/2017.
  */
 public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
+
     private static Image imagePiano = new Image("piano.GIF");
 
+    private ScaleFinder scaleFinder = new ScaleFinder();
+
     private ArrayList scale;
+
     private int root;
+
     public PianoCanvas() {
+        scale = scaleFinder.getScale();
+        setScaleRoot(0);
+        setScaleType("Ionian");
         setWidth(imagePiano.getWidth());
         setHeight(imagePiano.getHeight());
         GraphicsContext gc = getGraphicsContext2D();
@@ -27,6 +35,23 @@ public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
         setOnMouseClicked(this);
     }
 
+    public void setScaleRoot(int rootNote) {
+        GraphicsContext gc = getGraphicsContext2D();
+        scaleFinder.setRoot(rootNote);
+        scale = scaleFinder.getScale();
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
+        new PianoMapper(getGraphicsContext2D(), new Note(rootNote));
+    }
+
+    public void setScaleType(String scaleType) {
+        GraphicsContext gc = getGraphicsContext2D();
+        scaleFinder.setScaleName(scaleType);
+        scale = scaleFinder.getScale();
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
+        new PianoMapper(getGraphicsContext2D(), new Note(root));
+    }
     @Override
     public void handle(MouseEvent event) {
         System.out.println("Piano:    x: " + event.getX() + "   y: " + event.getY());
@@ -42,7 +67,7 @@ public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
             }
         }
         private final int KEYBOARD[] = { 8,20,29,41,50,71,83,92,104,113,125,134 };
-        PianoMapper(GraphicsContext g) {
+        PianoMapper(GraphicsContext g, Note rootNote) {
             HashSet set = new HashSet(scale);
             for(int i=0; i<12; i++) {
                 if(noteInScale(i)) {
