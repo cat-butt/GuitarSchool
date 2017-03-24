@@ -11,6 +11,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -25,7 +27,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         this.pianoCanvas = pianoCanvas;
     }
 
-    private Image imageGuitar = new Image("guitar.GIF");
+    private Image imageGuitar = new Image("guitar-big.GIF");
 
     private ScaleFinder scaleFinder = new ScaleFinder();
 
@@ -37,11 +39,11 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                     {11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
                     {4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3}};
 
-    private static final int coordX[] = {33, 101, 165, 226, 283, 337, 388, 436, 481,
-            524, 565, 603, 639, 673, 705, 735, 764, 791,
-            817, 841, 863, 885, 905, 924};
+    private List<Integer> xCoords;
+    private List<Integer> yCoords;
 
-    private static final int coordY[] = {100, 83, 66, 49, 32, 15};
+    private List<Integer> xCoords_big = new ArrayList<>();
+    private List<Integer> yCoords_big = new ArrayList<>();
 
     private ArrayList scale = null;
 
@@ -51,28 +53,46 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     Rectangle stringRect[] = new Rectangle[6];
 
-    {
-        for (int i = 0; i < 6; i++) {
-            stringRect[i] = new Rectangle(5, coordY[i] - 7, 10, 10);
-            string[i] = true;
-        }
-    }
-
     Rectangle noteRect[][] = new Rectangle[6][24];
 
-    {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 1; j < 24; j++) {
-                int x1 = coordX[j - 1];
-                int x2 = coordX[j];
-                int y1 = coordY[i];
-                int x8 = (x2 - x1);
-                noteRect[i][j - 1] = new Rectangle(x1, y1 - 7, x8, 14);
-            }
-        }
-    }
 
     public GuitarCanvas() {
+
+
+        xCoords = new ArrayList<>(Arrays.asList(33, 101, 165, 226, 283, 337, 388, 436, 481,
+                524, 565, 603, 639, 673, 705, 735, 764, 791,
+                817, 841, 863, 885, 905, 924));
+
+        yCoords = new ArrayList<>(Arrays.asList(100, 83, 66, 49, 32, 15));
+
+        for( Integer i: xCoords) {
+            Double x = i*1.5;
+            xCoords_big.add(x.intValue());
+        }
+        for( Integer i: yCoords) {
+            Double x = i*1.5;
+            yCoords_big.add(x.intValue());
+        }
+
+        {
+            for (int i = 0; i < 6; i++) {
+                stringRect[i] = new Rectangle(5, yCoords_big.get(i) - 7, 10, 10);
+                string[i] = true;
+            }
+        }
+
+        {
+            for (int i = 0; i < 6; i++) {
+                for (int j = 1; j < 24; j++) {
+                    int x1 = xCoords_big.get(j - 1);
+                    int x2 = xCoords_big.get(j);
+                    int y1 = yCoords_big.get(i);
+                    int x8 = x2 - x1;
+                    noteRect[i][j - 1] = new Rectangle(x1, y1 - 7, x8, 14);
+                }
+            }
+        }
+
         scale = scaleFinder.getScale();
         setScaleRoot(0);
         setScaleType("Ionian");
@@ -159,7 +179,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
             Color rootColor = new Color(1.0, 0.0, 0.0, .5);
 //            Color rootColor = new Color(1.0f,0.0f,0.0f);
-            g.setFont(new Font("Serif", 10.0));
+            g.setFont(new Font("Serif", 12.0));
 //            g.setFont(new Font("Serif",Font.PLAIN,10));
 //            FontMetrics fm = getFontMetrics(g.getFont());
             for (int i = 0; i < 6; i++) { //6 strings
@@ -188,9 +208,10 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                             /** draw the note (oval) and the note name*/
                             g.fillOval(noteRect[i][j - 1].getX() + 3, noteRect[i][j - 1].getY(),
                                     noteRect[i][j - 1].getWidth() - 6, noteRect[i][j - 1].getHeight());
-                            int x1 = coordX[j - 1];
-                            int x2 = coordX[j];
-                            int y1 = coordY[i];
+//                            int x1 = coordX[j - 1];
+                            int x1 = xCoords_big.get(j - 1);
+                            int x2 = xCoords_big.get(j);
+                            int y1 = yCoords_big.get(i);
                             String note = ScaleFinder.NOTE_NAMES[fretboard[i][j]];
                             if (note.length() >= 2)
                                 note = note.substring(0, 2);
@@ -201,8 +222,8 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                         }
                         /** an open string */
                         else {
-                            int x = coordX[0] - 14;
-                            int y = coordY[i];
+                            int x = xCoords_big.get(0) - 14;
+                            int y = yCoords_big.get(i);
                             if (string[i]) {
 //                                if(fretboard[i][j] == root)
 //                                    g.setColor(rootColor);

@@ -14,7 +14,7 @@ import java.util.HashSet;
 /**
  * Created by jackson on 3/17/2017.
  */
-public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
+public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent> {
 
     private GuitarCanvas guitarCanvas;
 
@@ -38,7 +38,7 @@ public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
         setHeight(imagePiano.getHeight());
         GraphicsContext gc = getGraphicsContext2D();
         gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
-        setOnMouseClicked(this);
+//        setOnMouseClicked(this);
     }
 
     public void setScaleRoot(int rootNote) {
@@ -58,10 +58,14 @@ public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
         gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
         new PianoMapper(getGraphicsContext2D(), new Note(root));
     }
-    @Override
-    public void handle(MouseEvent event) {
-        System.out.println("Piano:    x: " + event.getX() + "   y: " + event.getY());
-    }
+//    @Override
+//    public void handle(MouseEvent event) {
+//        System.out.println("Piano:    x: " + event.getX() + "   y: " + event.getY());
+//        GraphicsContext gc = getGraphicsContext2D();
+//        gc.clearRect(0,0,getWidth(), getHeight());
+//        gc.drawImage(imagePiano, 0,0, imagePiano.getWidth(), imagePiano.getHeight());
+//        Note note = getNote
+//    }
 
     class PianoMapper {
         private int[] notes;

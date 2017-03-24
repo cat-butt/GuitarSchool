@@ -74,11 +74,30 @@ public class GuitarSchool extends Application {
             for( String s: scaleFinder.getGroup(familyName) ) {
                 RadioButton radioButton = new RadioButton(s);
                 radioButton.setToggleGroup(toggleGroup);
+                radioButton.setGraphicTextGap(10.5);
                 radioButtons.add(radioButton);
             }
             vbox.getChildren().addAll(radioButtons);
+//            vbox.getChildren().addAll(radioButtons);
            gridPane.add(vbox,nCount++, 1);
         }
+
+        VBox vBox = new VBox();
+        ToggleGroup rootToggleGroup = new ToggleGroup();
+        ArrayList<RadioButton> radioButtons = new ArrayList<>();
+        RadioButton rb0 = new RadioButton("C");
+        RadioButton rb1 = new RadioButton("C#");
+        RadioButton rb2 = new RadioButton("D");
+        rb0.setToggleGroup(rootToggleGroup);
+        rb1.setToggleGroup(rootToggleGroup);
+        rb2.setToggleGroup(rootToggleGroup);
+        radioButtons.add(rb0);
+        radioButtons.add(rb1);
+        radioButtons.add(rb2);
+        vBox.getChildren().addAll(radioButtons);
+
+        gridPane.add(vBox, nCount, 1);
+
 
         toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
