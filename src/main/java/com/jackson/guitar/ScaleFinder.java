@@ -18,7 +18,7 @@ import static java.lang.ClassLoader.getSystemResource;
 public class ScaleFinder {
     public static final int NOTE_MAPPING[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     public static final String NOTE_MAPPING_RELATIVE_NAMES[] = {"b9", "9", "m3", "M3", "4", "b5", "5", "#5", "6", "b7", "maj7"};
-    public static final String NOTE_NAMES[] = {"C", "Db/C#", "D", "Eb/D#", "E", "F", "F#/Gb", "G", "Ab/G#", "A", "Bb/A#", "B"};
+    public static final String NOTE_NAMES[] = {"C", "C#/Db", "D", "Eb/D#", "E", "F", "F#/Gb", "G", "Ab/G#", "A", "Bb/A#", "B"};
     private static HashMap masterList = new HashMap();
     private int currentRoot = 0;
     private String currentScaleName = "Ionian";

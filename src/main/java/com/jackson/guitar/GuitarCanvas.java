@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -183,9 +184,10 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                             String note = ScaleFinder.NOTE_NAMES[fretboard[i][j]];
                             if (note.length() >= 2)
                                 note = note.substring(0, 2);
-//                            double xText = x1+(x2-x1)/2.0-fm.stringWidth(note)/2.0;
-//                            g.setColor(Color.black);
-//                            g.drawString(note,(int)(xText),y1+3);
+                            final Text text = new Text(note);
+                            double xText = x1+(x2-x1)/2.0-text.getLayoutBounds().getWidth()/2.0;
+                            g.setFill(Color.BLACK);
+                            g.fillText(note,(int)(xText),y1+3);
                         }
                         /** an open string */
                         else {
