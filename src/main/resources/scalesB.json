@@ -110,6 +110,11 @@
       "name": "Dom Pentatonic",
       "steps": "23232",
       "familyName": "Pentatonic"
+    },
+    {
+      "name": "Chromatic",
+      "steps": "111111111111",
+      "familyName": "Synthetic"
     }
   ]
 }
