@@ -1,15 +1,14 @@
 package com.jackson.guitar;
 
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by jackson on 3/17/2017.
@@ -22,7 +21,7 @@ public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent>
         this.guitarCanvas = guitarCanvas;
     }
 
-    private static Image imagePiano = new Image("piano.GIF");
+    private static Image imagePiano = new Image("piano_big.GIF");
 
     private ScaleFinder scaleFinder = new ScaleFinder();
 
@@ -76,8 +75,13 @@ public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent>
                 notes[i] = n.getNote();
             }
         }
-        private final int KEYBOARD[] = { 8,20,29,41,50,71,83,92,104,113,125,134 };
+        private List<Integer> keyboard = new ArrayList<>(Arrays.asList(8,20,29,41,50,71,83,92,104,113,125,134));
+        private List<Integer> keyboard_big = new ArrayList<>();
+
         PianoMapper(GraphicsContext g, Note rootNote) {
+            for( Integer i: keyboard) {
+                keyboard_big.add(i*2);
+            }
             HashSet set = new HashSet(scale);
             for(int i=0; i<12; i++) {
                 if(noteInScale(i)) {
@@ -87,10 +91,12 @@ public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent>
                         g.setFill(new Color(0.6F,0.6F,0.0F, .5));
                     if(i!=1 && i!=3 && i!=6 && i!=8 && i!=10)
                         for(int j=0; j<3; j++)
-                            g.fillOval(KEYBOARD[i]+j*147,25,10,10);
+                            g.fillOval(keyboard_big.get(i)+j*294,50,20,20);
+//                    g.fillOval(keyboard_big.get(i)+j*147,25,10,10);
                     else
                         for(int j=0; j<3; j++)
-                            g.fillOval(KEYBOARD[i]+j*147,8,10,10);
+                            g.fillOval(keyboard_big.get(i)+j*294,16,20,20);
+//                    g.fillOval(keyboard_big.get(i)+j*147,8,10,10);
                 }
             }
         }
