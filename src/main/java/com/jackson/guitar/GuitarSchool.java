@@ -44,6 +44,9 @@ public class GuitarSchool extends Application {
         guitarCanvas = new GuitarCanvas();
         pianoCanvas = new PianoCanvas();
 
+        guitarCanvas.setPianoCanvas(pianoCanvas);
+        pianoCanvas.setGuitarCanvas(guitarCanvas);
+
         VBox vBox = new VBox();
         vBox.getChildren().addAll(menuBar, guitarCanvas, pianoCanvas);
         border.setCenter(vBox);
@@ -82,6 +85,7 @@ public class GuitarSchool extends Application {
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if( toggleGroup.getSelectedToggle() != null) {
                     guitarCanvas.setScaleType(((Labeled)newValue).getText());
+                    pianoCanvas.setScaleType(((Labeled)newValue).getText());
                     System.out.println("oldValue: " + oldValue + "    newValue: " + newValue);
                 }
             }

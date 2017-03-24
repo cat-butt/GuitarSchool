@@ -16,6 +16,12 @@ import java.util.HashSet;
  */
 public class PianoCanvas extends Canvas implements EventHandler<MouseEvent> {
 
+    private GuitarCanvas guitarCanvas;
+
+    public void setGuitarCanvas(GuitarCanvas guitarCanvas) {
+        this.guitarCanvas = guitarCanvas;
+    }
+
     private static Image imagePiano = new Image("piano.GIF");
 
     private ScaleFinder scaleFinder = new ScaleFinder();

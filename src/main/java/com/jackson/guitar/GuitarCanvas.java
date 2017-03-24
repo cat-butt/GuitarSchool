@@ -18,6 +18,13 @@ import java.util.ArrayList;
  */
 public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
+
+    private PianoCanvas pianoCanvas;
+
+    public void setPianoCanvas(PianoCanvas pianoCanvas) {
+        this.pianoCanvas = pianoCanvas;
+    }
+
     private Image imageGuitar = new Image("guitar.GIF");
 
     private ScaleFinder scaleFinder = new ScaleFinder();
@@ -104,6 +111,9 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         if (note != null) {
             setScaleRoot(note.getNote());
             new FretboardMapper(getGraphicsContext2D(), note);
+            if(pianoCanvas != null) {
+                pianoCanvas.setScaleRoot(note.getNote());
+            }
         }
     }
 
