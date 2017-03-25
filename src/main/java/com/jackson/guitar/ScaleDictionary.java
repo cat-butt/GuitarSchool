@@ -1,9 +1,14 @@
 package com.jackson.guitar;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,6 +56,24 @@ public class ScaleDictionary {
         return scalesMap.get(name).getStepList();
     }
 
+
+
+    @JsonCreator
+    public static ScaleDictionary Create(String json ) {
+        ScaleDictionary scaleDictionary = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            scaleDictionary = mapper.readValue(json, ScaleDictionary.class);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return scaleDictionary;
+    }
 //    @JsonIgnore
 //    public HashMap<String, Scale> getScalesMap() {
 //        return scalesMap;
@@ -64,7 +87,7 @@ public class ScaleDictionary {
         return sb.toString();
     }
 
-    private static class Scale {
+    public static class Scale {
         private String name;
         private String familyName;
         private String steps;
