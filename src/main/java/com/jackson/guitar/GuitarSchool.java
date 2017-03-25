@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -65,46 +66,48 @@ public class GuitarSchool extends Application {
         ArrayList<String> familyList = scaleFinder.getGroupNameList();
 
         GridPane gridPane = new GridPane();
+        gridPane.setGridLinesVisible(true);
 
         int nCount = 0;
-        for( String familyName: familyList ) {
+        for (String familyName : familyList) {
             VBox vbox = new VBox();
             ArrayList<RadioButton> radioButtons = new ArrayList<>();
-            vbox.getChildren().add(new Label(familyName));
-            for( String s: scaleFinder.getGroup(familyName) ) {
+            Label l = new Label(familyName);
+            l.setFont(Font.font(18));
+            vbox.getChildren().add(l);
+            for (String s : scaleFinder.getGroup(familyName)) {
                 RadioButton radioButton = new RadioButton(s);
+                radioButton.setFont(Font.font(14));
                 radioButton.setToggleGroup(toggleGroup);
                 radioButton.setGraphicTextGap(10.5);
                 radioButtons.add(radioButton);
             }
             vbox.getChildren().addAll(radioButtons);
-//            vbox.getChildren().addAll(radioButtons);
-           gridPane.add(vbox,nCount++, 1);
+            vbox.setSpacing(5.0);
+            vbox.setPadding(new Insets(8,8,8,8));
+            gridPane.add(vbox, nCount++, 1);
         }
 
         VBox vBox = new VBox();
         ToggleGroup rootToggleGroup = new ToggleGroup();
         ArrayList<RadioButton> radioButtons = new ArrayList<>();
-        RadioButton rb0 = new RadioButton("C");
-        RadioButton rb1 = new RadioButton("C#");
-        RadioButton rb2 = new RadioButton("D");
-        rb0.setToggleGroup(rootToggleGroup);
-        rb1.setToggleGroup(rootToggleGroup);
-        rb2.setToggleGroup(rootToggleGroup);
-        radioButtons.add(rb0);
-        radioButtons.add(rb1);
-        radioButtons.add(rb2);
-        vBox.getChildren().addAll(radioButtons);
+        for (int i = 0; i < 12; i++) {
+            RadioButton rb = new RadioButton(ScaleFinder.NOTE_NAMES[i]);
+            rb.setFont(Font.font(14));
+            rb.setToggleGroup(rootToggleGroup);
+            radioButtons.add(rb);
+        }
 
+        vBox.getChildren().addAll(radioButtons);
         gridPane.add(vBox, nCount, 1);
 
 
         toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if( toggleGroup.getSelectedToggle() != null) {
-                    guitarCanvas.setScaleType(((Labeled)newValue).getText());
-                    pianoCanvas.setScaleType(((Labeled)newValue).getText());
+                if (toggleGroup.getSelectedToggle() != null) {
+                    guitarCanvas.setScaleType(((Labeled) newValue).getText());
+                    pianoCanvas.setScaleType(((Labeled) newValue).getText());
                     System.out.println("oldValue: " + oldValue + "    newValue: " + newValue);
                 }
             }

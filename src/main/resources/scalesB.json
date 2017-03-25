@@ -115,6 +115,26 @@
       "name": "Chromatic",
       "steps": "111111111111",
       "familyName": "Synthetic"
+    },
+    {
+      "name": "Major Triad",
+      "steps": "435",
+      "familyName": "Triads"
+    },
+    {
+      "name": "Minor Triad",
+      "steps": "345",
+      "familyName": "Triads"
+    },
+    {
+      "name": "Diminished Triad",
+      "steps": "336",
+      "familyName": "Triads"
+    },
+    {
+      "name": "Augmented Triad",
+      "steps": "444",
+      "familyName": "Triads"
     }
   ]
 }
