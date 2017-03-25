@@ -95,12 +95,25 @@ public class GuitarSchool extends Application {
             RadioButton rb = new RadioButton(ScaleFinder.NOTE_NAMES[i]);
             rb.setFont(Font.font(14));
             rb.setToggleGroup(rootToggleGroup);
+            rb.setUserData(i);
             radioButtons.add(rb);
         }
 
         vBox.getChildren().addAll(radioButtons);
         gridPane.add(vBox, nCount, 1);
 
+
+
+        rootToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (rootToggleGroup.getSelectedToggle() != null) {
+                    guitarCanvas.setScaleRoot((int)newValue.getUserData());
+                    pianoCanvas.setScaleRoot((int)newValue.getUserData());
+                    System.out.println("oldValue: " + oldValue + "    newValue: " + newValue);
+                }
+            }
+        });
 
         toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override

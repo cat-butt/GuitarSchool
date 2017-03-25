@@ -8,6 +8,19 @@ public class Note {
     private int position;
     private boolean is_root = false;
 
+
+    public enum Status { FOUND, NOT_FOUND, MUTE_STRING} ;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    private Status status = Status.FOUND;
+
     Note(int n) {
         this(n,false);
     }

@@ -55,6 +55,8 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     Rectangle noteRect[][] = new Rectangle[6][24];
 
+    static int currentPos = 0;
+
 
     public GuitarCanvas() {
 
@@ -76,7 +78,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
         {
             for (int i = 0; i < 6; i++) {
-                stringRect[i] = new Rectangle(5, yCoords_big.get(i) - 7, 10, 10);
+                stringRect[i] = new Rectangle(10, (yCoords_big.get(i) - 14), 20, 20);
                 string[i] = true;
             }
         }
@@ -118,6 +120,10 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         scale = scaleFinder.getScale();
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
+//        gc.setFill(Color.AQUA);
+//        for( Rectangle rect: stringRect ) {
+//            gc.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+//        }
         new FretboardMapper(getGraphicsContext2D(), new Note(root));
     }
 
@@ -129,16 +135,28 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         Note note = getNoteFromPosition(event.getX(), event.getY());
         if (note != null) {
-            setScaleRoot(note.getNote());
-            new FretboardMapper(getGraphicsContext2D(), note);
-            if(pianoCanvas != null) {
-                pianoCanvas.setScaleRoot(note.getNote());
+            if( note.getStatus() == Note.Status.FOUND ) {
+                setScaleRoot(note.getNote());
+                new FretboardMapper(getGraphicsContext2D(), note);
+                if (pianoCanvas != null) {
+                    pianoCanvas.setScaleRoot(note.getNote());
+                }
+            }
+            else if (note.getStatus() == Note.Status.MUTE_STRING) {
+                new FretboardMapper(getGraphicsContext2D());
+
             }
         }
     }
 
     private Note getNoteFromPosition(double x, double y) {
         for (int i = 0; i < 6; i++) {
+            if( stringRect[i].contains(x,y)) {
+                string[i] = !string[i];
+                Note note = new Note(0);
+                note.setStatus(Note.Status.MUTE_STRING);
+                return note;
+            }
             for (int j = 0; j < 23; j++) {
                 Rectangle rect = noteRect[i][j];
 //                System.out.println(rect);
@@ -159,8 +177,10 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
          */
         private int[] pos;
 
-        int currentPos = 0;
 
+        FretboardMapper(GraphicsContext g) {
+            this(g, new Note(currentPos));
+        }
         FretboardMapper(GraphicsContext g, Note rootNote) {
             {
                 notes = new int[scale.size()];
@@ -173,8 +193,10 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                 if (rootNote != null)
                     root = rootNote.getNote();
 
-                currentPos = root;
-                System.out.println("root:  " + root);
+                if( rootNote.getStatus() != Note.Status.MUTE_STRING ) {
+                    currentPos = root;
+                    System.out.println("root:  " + root);
+                }
             }
 
             Color rootColor = new Color(1.0, 0.0, 0.0, .5);
@@ -199,7 +221,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                                     float red = 1.0f - (float) currentPos / num;
                                     float green = 1.0f - (1.0f - (float) currentPos / num) / 2.0f;
                                     float blue = (float) currentPos / num;
-                                    g.setFill(new Color(red, green, blue, .5));
+                                    g.setFill(new Color(red, green, blue, .9));
                                 }
                             } else {
                                 g.setFill(new Color(.5f, .2f, .2f, .5));
