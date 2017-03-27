@@ -60,6 +60,20 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     public GuitarCanvas() {
 
+        init();
+
+        scale = scaleFinder.getScale();
+        setWidth(imageGuitar.getWidth());
+        setHeight(imageGuitar.getHeight());
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
+        setOnMouseClicked(this);
+
+        setScaleRoot(0);
+        setScaleType("Ionian");
+    }
+
+    private void init() {
 
         xCoords = new ArrayList<>(Arrays.asList(33, 101, 165, 226, 283, 337, 388, 436, 481,
                 524, 565, 603, 639, 673, 705, 735, 764, 791,
@@ -67,42 +81,30 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
         yCoords = new ArrayList<>(Arrays.asList(100, 83, 66, 49, 32, 15));
 
-        for( Integer i: xCoords) {
-            Double x = i*1.5;
+        for (Integer i : xCoords) {
+            Double x = i * 1.5;
             xCoords_big.add(x.intValue());
         }
-        for( Integer i: yCoords) {
-            Double x = i*1.5;
+        for (Integer i : yCoords) {
+            Double x = i * 1.5;
             yCoords_big.add(x.intValue());
         }
 
-        {
-            for (int i = 0; i < 6; i++) {
-                stringRect[i] = new Rectangle(10, (yCoords_big.get(i) - 14), 20, 20);
-                string[i] = true;
+        for (int i = 0; i < 6; i++) {
+            stringRect[i] = new Rectangle(10, (yCoords_big.get(i) - 14), 20, 20);
+            string[i] = true;
+        }
+
+        for (int i = 0; i < 6; i++) {
+            for (int j = 1; j < 24; j++) {
+                int x1 = xCoords_big.get(j - 1);
+                int x2 = xCoords_big.get(j);
+                int y1 = yCoords_big.get(i);
+                int x8 = x2 - x1;
+                noteRect[i][j - 1] = new Rectangle(x1, y1 - 7, x8, 14);
             }
         }
 
-        {
-            for (int i = 0; i < 6; i++) {
-                for (int j = 1; j < 24; j++) {
-                    int x1 = xCoords_big.get(j - 1);
-                    int x2 = xCoords_big.get(j);
-                    int y1 = yCoords_big.get(i);
-                    int x8 = x2 - x1;
-                    noteRect[i][j - 1] = new Rectangle(x1, y1 - 7, x8, 14);
-                }
-            }
-        }
-
-        scale = scaleFinder.getScale();
-        setScaleRoot(0);
-        setScaleType("Ionian");
-        setWidth(imageGuitar.getWidth());
-        setHeight(imageGuitar.getHeight());
-        GraphicsContext gc = getGraphicsContext2D();
-        gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
-        setOnMouseClicked(this);
     }
 
     public void setScaleRoot(int rootNote) {
@@ -135,14 +137,13 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         Note note = getNoteFromPosition(event.getX(), event.getY());
         if (note != null) {
-            if( note.getStatus() == Note.Status.FOUND ) {
+            if (note.getStatus() == Note.Status.FOUND) {
                 setScaleRoot(note.getNote());
                 new FretboardMapper(getGraphicsContext2D(), note);
                 if (pianoCanvas != null) {
                     pianoCanvas.setScaleRoot(note.getNote());
                 }
-            }
-            else if (note.getStatus() == Note.Status.MUTE_STRING) {
+            } else if (note.getStatus() == Note.Status.MUTE_STRING) {
                 new FretboardMapper(getGraphicsContext2D());
 
             }
@@ -151,7 +152,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     private Note getNoteFromPosition(double x, double y) {
         for (int i = 0; i < 6; i++) {
-            if( stringRect[i].contains(x,y)) {
+            if (stringRect[i].contains(x, y)) {
                 string[i] = !string[i];
                 Note note = new Note(0);
                 note.setStatus(Note.Status.MUTE_STRING);
@@ -181,6 +182,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         FretboardMapper(GraphicsContext g) {
             this(g, new Note(currentPos));
         }
+
         FretboardMapper(GraphicsContext g, Note rootNote) {
             {
                 notes = new int[scale.size()];
@@ -193,7 +195,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                 if (rootNote != null)
                     root = rootNote.getNote();
 
-                if( rootNote.getStatus() != Note.Status.MUTE_STRING ) {
+                if (rootNote.getStatus() != Note.Status.MUTE_STRING) {
                     currentPos = root;
                     System.out.println("root:  " + root);
                 }
@@ -238,9 +240,9 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                             if (note.length() >= 2)
                                 note = note.substring(0, 2);
                             final Text text = new Text(note);
-                            double xText = x1+(x2-x1)/2.0-text.getLayoutBounds().getWidth()/2.0;
+                            double xText = x1 + (x2 - x1) / 2.0 - text.getLayoutBounds().getWidth() / 2.0;
                             g.setFill(Color.BLACK);
-                            g.fillText(note,(int)(xText),y1+3);
+                            g.fillText(note, (int) (xText), y1 + 3);
                         }
                         /** an open string */
                         else {

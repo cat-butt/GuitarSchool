@@ -31,12 +31,12 @@ public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent>
 
     public PianoCanvas() {
         scale = scaleFinder.getScale();
-        setScaleRoot(0);
-        setScaleType("Ionian");
         setWidth(imagePiano.getWidth());
         setHeight(imagePiano.getHeight());
         GraphicsContext gc = getGraphicsContext2D();
         gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
+        setScaleRoot(0);
+        setScaleType("Ionian");
 //        setOnMouseClicked(this);
     }
 

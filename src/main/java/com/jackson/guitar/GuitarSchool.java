@@ -80,6 +80,7 @@ public class GuitarSchool extends Application {
                 radioButton.setFont(Font.font(14));
                 radioButton.setToggleGroup(toggleGroup);
                 radioButton.setGraphicTextGap(10.5);
+                radioButton.setSelected("Ionian".equals(s));
                 radioButtons.add(radioButton);
             }
             vbox.getChildren().addAll(radioButtons);
@@ -93,6 +94,7 @@ public class GuitarSchool extends Application {
         ArrayList<RadioButton> radioButtons = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             RadioButton rb = new RadioButton(ScaleFinder.NOTE_NAMES[i]);
+            rb.setSelected(i == 0);
             rb.setFont(Font.font(14));
             rb.setToggleGroup(rootToggleGroup);
             rb.setUserData(i);
