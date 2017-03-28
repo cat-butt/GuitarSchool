@@ -113,7 +113,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         scale = scaleFinder.getScale();
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
-        new FretboardMapper(getGraphicsContext2D(), new Note(rootNote));
+        updateFretboard(new Note(rootNote));
     }
 
     public void setScaleType(String scaleType) {
@@ -122,11 +122,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         scale = scaleFinder.getScale();
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
-//        gc.setFill(Color.AQUA);
-//        for( Rectangle rect: stringRect ) {
-//            gc.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-//        }
-        new FretboardMapper(getGraphicsContext2D(), new Note(root));
+        updateFretboard(new Note(root));
     }
 
     @Override
@@ -139,13 +135,12 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         if (note != null) {
             if (note.getStatus() == Note.Status.FOUND) {
                 setScaleRoot(note.getNote());
-                new FretboardMapper(getGraphicsContext2D(), note);
+                updateFretboard(note);
                 if (pianoCanvas != null) {
                     pianoCanvas.setScaleRoot(note.getNote());
                 }
             } else if (note.getStatus() == Note.Status.MUTE_STRING) {
-                new FretboardMapper(getGraphicsContext2D());
-
+                updateFretboard(new Note(currentPos));
             }
         }
     }
@@ -160,8 +155,6 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
             }
             for (int j = 0; j < 23; j++) {
                 Rectangle rect = noteRect[i][j];
-//                System.out.println(rect);
-//                if( noteRect[i][j].contains(x,y)) {
                 if (rect.contains(x, y)) {
                     return new Note(fretboard[i][j + 1]);
                 }
@@ -171,108 +164,78 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
         return null;
     }
 
-    class FretboardMapper {
-        private int[] notes;
-        /**
-         * position of the note relative to the scale
-         */
-        private int[] pos;
+    private void updateFretboard( Note rootNote) {
+        GraphicsContext g = getGraphicsContext2D();
+        int[] notes = new int[scale.size()];
+        int[] pos = new int[scale.size()];
+        for (int i = 0; i < scale.size(); i++) {
+            Note n = (Note) scale.get(i);
+            notes[i] = n.getNote();
+            pos[i] = n.getPos();
+        }
+        if (rootNote != null)
+            root = rootNote.getNote();
 
-
-        FretboardMapper(GraphicsContext g) {
-            this(g, new Note(currentPos));
+        if (rootNote.getStatus() != Note.Status.MUTE_STRING) {
+            currentPos = root;
+            System.out.println("root:  " + root);
         }
 
-        FretboardMapper(GraphicsContext g, Note rootNote) {
-            {
-                notes = new int[scale.size()];
-                pos = new int[scale.size()];
-                for (int i = 0; i < scale.size(); i++) {
-                    Note n = (Note) scale.get(i);
-                    notes[i] = n.getNote();
-                    pos[i] = n.getPos();
-                }
-                if (rootNote != null)
-                    root = rootNote.getNote();
-
-                if (rootNote.getStatus() != Note.Status.MUTE_STRING) {
-                    currentPos = root;
-                    System.out.println("root:  " + root);
-                }
-            }
-
-            Color rootColor = new Color(1.0, 0.0, 0.0, .5);
-//            Color rootColor = new Color(1.0f,0.0f,0.0f);
-            g.setFont(new Font("Serif", 12.0));
-//            g.setFont(new Font("Serif",Font.PLAIN,10));
-//            FontMetrics fm = getFontMetrics(g.getFont());
-            Color lightBlue = Color.LIGHTBLUE;
-            for (int i = 0; i < 6; i++) { //6 strings
-                for (int j = 0; j < 24; j++) { //24 frets
-                    /** position on fretboard is in scale */
-                    if (positionFretted(i, j)) {
-                        /** not an open string */
-                        if (j != 0) {
-                            /** Determine color of note*/
-                            if (string[i]) {
-                                if (fretboard[i][j] == root)
-                                    g.setFill(Color.RED); //light blue
-//                                g.setColor(rootColor); //light blue
-                                else {
-                                    g.setFill(lightBlue);
-//                                    float num = (float) pos.length;
-//                                    float red = 1.0f - (float) currentPos / num;
-//                                    float green = 1.0f - (1.0f - (float) currentPos / num) / 2.0f;
-//                                    float blue = (float) currentPos / num;
-//                                    g.setFill(new Color(red, green, blue, .9));
-                                }
-                            } else {
-                                g.setFill(new Color(.5f, .2f, .2f, .5));
-//                            g.setColor(Color.gray);
-                            }
-                            /** draw the note (oval) and the note name*/
-                            g.fillOval(noteRect[i][j - 1].getX() + 3, noteRect[i][j - 1].getY(),
-                                    noteRect[i][j - 1].getWidth() - 6, noteRect[i][j - 1].getHeight());
-//                            int x1 = coordX[j - 1];
-                            int x1 = xCoords_big.get(j - 1);
-                            int x2 = xCoords_big.get(j);
-                            int y1 = yCoords_big.get(i);
-                            String note = ScaleFinder.NOTE_NAMES[fretboard[i][j]];
-                            if (note.length() >= 2)
-                                note = note.substring(0, 2);
-                            final Text text = new Text(note);
-                            double xText = x1 + (x2 - x1) / 2.0 - text.getLayoutBounds().getWidth() / 2.0;
-                            g.setFill(Color.BLACK);
-                            g.fillText(note, (int) (xText), y1 + 3);
-                        }
-                        /** an open string */
-                        else {
-                            int x = xCoords_big.get(0) - 28;
-                            int y = yCoords_big.get(i);
-                            if (string[i]) {
-                                g.fillOval(x, y - 14, 28,28);
-//                                if(fretboard[i][j] == root)
-//                                    g.setColor(rootColor);
-//                                else
-//                                    g.setColor(Color.yellow);
-                            } else
-//                                g.setColor(new Color(.5f,.2f,.2f));
-                                g.fillOval(x, y - 14, 28,28);
-                        }
+        Color rootColor = new Color(1.0, 0.0, 0.0, .5);
+        g.setFont(new Font("Serif", 12.0));
+        Color lightBlue = Color.LIGHTBLUE;
+        for (int i = 0; i < 6; i++) { //6 strings
+            for (int j = 0; j < 24; j++) { //24 frets
+                boolean bPosFretted = false;
+                for (int k = 0; k < notes.length; k++) {
+                    if (notes[k] == fretboard[i][j]) {
+                        currentPos = pos[k];
+                        bPosFretted = true;
                     }
-                }// end for: frets
-            }// end for: string
-        }// end FretboardMapper constructor
-
-        private boolean positionFretted(int i, int j) {
-            for (int k = 0; k < notes.length; k++) {
-                if (notes[k] == fretboard[i][j]) {
-                    currentPos = pos[k];
-                    return true;
                 }
-            }
-            return false;
-        }
+                /** position on fretboard is in scale */
+//                if (positionFretted(i, j)) {
+                if (bPosFretted) {
+                    /** not an open string */
+                    if (j != 0) {
+                        /** Determine color of note*/
+                        if (string[i]) {
+                            if (fretboard[i][j] == root)
+                                g.setFill(Color.RED); //light blue
+                            else {
+                                g.setFill(lightBlue);
+                            }
+                        } else {
+                            g.setFill(new Color(.5f, .2f, .2f, .5));
+                        }
+                        /** draw the note (oval) and the note name*/
+                        g.fillOval(noteRect[i][j - 1].getX() + 3, noteRect[i][j - 1].getY(),
+                                noteRect[i][j - 1].getWidth() - 6, noteRect[i][j - 1].getHeight());
+//                            int x1 = coordX[j - 1];
+                        int x1 = xCoords_big.get(j - 1);
+                        int x2 = xCoords_big.get(j);
+                        int y1 = yCoords_big.get(i);
+                        String note = ScaleFinder.NOTE_NAMES[fretboard[i][j]];
+                        if (note.length() >= 2)
+                            note = note.substring(0, 2);
+                        final Text text = new Text(note);
+                        double xText = x1 + (x2 - x1) / 2.0 - text.getLayoutBounds().getWidth() / 2.0;
+                        g.setFill(Color.BLACK);
+                        g.fillText(note, (int) (xText), y1 + 3);
+                    }
+                    /** an open string */
+                    else {
+                        int x = xCoords_big.get(0) - 28;
+                        int y = yCoords_big.get(i);
+                        if (string[i]) {
+                            g.fillOval(x, y - 14, 28,28);
+                        } else
+                            g.fillOval(x, y - 14, 28,28);
+                    }
+                }
+            }// end for: frets
+        }// end for: string
+
     }
 
 }
