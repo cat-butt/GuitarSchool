@@ -206,6 +206,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
             g.setFont(new Font("Serif", 12.0));
 //            g.setFont(new Font("Serif",Font.PLAIN,10));
 //            FontMetrics fm = getFontMetrics(g.getFont());
+            Color lightBlue = Color.LIGHTBLUE;
             for (int i = 0; i < 6; i++) { //6 strings
                 for (int j = 0; j < 24; j++) { //24 frets
                     /** position on fretboard is in scale */
@@ -218,12 +219,12 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                                     g.setFill(Color.RED); //light blue
 //                                g.setColor(rootColor); //light blue
                                 else {
-                                    g.setFill(Color.CHARTREUSE);
-                                    float num = (float) pos.length;
-                                    float red = 1.0f - (float) currentPos / num;
-                                    float green = 1.0f - (1.0f - (float) currentPos / num) / 2.0f;
-                                    float blue = (float) currentPos / num;
-                                    g.setFill(new Color(red, green, blue, .9));
+                                    g.setFill(lightBlue);
+//                                    float num = (float) pos.length;
+//                                    float red = 1.0f - (float) currentPos / num;
+//                                    float green = 1.0f - (1.0f - (float) currentPos / num) / 2.0f;
+//                                    float blue = (float) currentPos / num;
+//                                    g.setFill(new Color(red, green, blue, .9));
                                 }
                             } else {
                                 g.setFill(new Color(.5f, .2f, .2f, .5));
@@ -246,16 +247,17 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                         }
                         /** an open string */
                         else {
-                            int x = xCoords_big.get(0) - 14;
+                            int x = xCoords_big.get(0) - 28;
                             int y = yCoords_big.get(i);
                             if (string[i]) {
+                                g.fillOval(x, y - 14, 28,28);
 //                                if(fretboard[i][j] == root)
 //                                    g.setColor(rootColor);
 //                                else
 //                                    g.setColor(Color.yellow);
                             } else
 //                                g.setColor(new Color(.5f,.2f,.2f));
-                                g.fillOval(x, y - 7, 14, 14);
+                                g.fillOval(x, y - 14, 28,28);
                         }
                     }
                 }// end for: frets

@@ -41,6 +41,7 @@ public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent>
     }
 
     public void setScaleRoot(int rootNote) {
+        root = rootNote;
         GraphicsContext gc = getGraphicsContext2D();
         scaleFinder.setRoot(rootNote);
         scale = scaleFinder.getScale();
@@ -86,17 +87,15 @@ public class PianoCanvas extends Canvas  { //implements EventHandler<MouseEvent>
             for(int i=0; i<12; i++) {
                 if(noteInScale(i)) {
                     if(i == root)
-                        g.setFill(Color.BLUE);
+                        g.setFill(Color.RED);
                     else
-                        g.setFill(new Color(0.6F,0.6F,0.0F, .5));
+                        g.setFill(Color.LIGHTBLUE);
                     if(i!=1 && i!=3 && i!=6 && i!=8 && i!=10)
                         for(int j=0; j<3; j++)
                             g.fillOval(keyboard_big.get(i)+j*294,50,20,20);
-//                    g.fillOval(keyboard_big.get(i)+j*147,25,10,10);
                     else
                         for(int j=0; j<3; j++)
                             g.fillOval(keyboard_big.get(i)+j*294,16,20,20);
-//                    g.fillOval(keyboard_big.get(i)+j*147,8,10,10);
                 }
             }
         }
