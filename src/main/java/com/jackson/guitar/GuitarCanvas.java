@@ -21,6 +21,7 @@ import java.util.List;
 public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
 
+    private ScaleDictionary scaleDictionary;
     private PianoCanvas pianoCanvas;
 
     public void setPianoCanvas(PianoCanvas pianoCanvas) {
@@ -28,8 +29,6 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
     }
 
     private Image imageGuitar = new Image("guitar-big.GIF");
-
-    private ScaleFinder scaleFinder = new ScaleFinder();
 
     private static final int fretboard[][] =
             {{4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3},
@@ -57,20 +56,26 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     static int currentPos = 0;
 
+    int currentNote = 0;
+    String currentScale = "Ionian";
 
     public GuitarCanvas() {
 
         init();
+        scaleDictionary = ScaleDictionary.createDict();
 
-        scale = scaleFinder.getScale();
+//        scale = scaleFinder.getScale();
+        scale = (ArrayList) scaleDictionary.getScaleNotesFromNameAndRoot(currentScale, currentNote);
         setWidth(imageGuitar.getWidth());
         setHeight(imageGuitar.getHeight());
         GraphicsContext gc = getGraphicsContext2D();
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         setOnMouseClicked(this);
 
-        setScaleRoot(0);
-        setScaleType("Ionian");
+        updateFretboard(new Note(currentNote));
+
+//        setScaleRoot(0);
+//        setScaleType("Ionian");
     }
 
     private void init() {
@@ -108,9 +113,11 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
     }
 
     public void setScaleRoot(int rootNote) {
+        currentNote = rootNote;
         GraphicsContext gc = getGraphicsContext2D();
-        scaleFinder.setRoot(rootNote);
-        scale = scaleFinder.getScale();
+//        scaleFinder.setRoot(rootNote);
+//        scale = scaleFinder.getScale();
+        scale = (ArrayList) scaleDictionary.getScaleNotesFromNameAndRoot(currentScale, currentNote);
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         updateFretboard(new Note(rootNote));
@@ -118,8 +125,10 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
 
     public void setScaleType(String scaleType) {
         GraphicsContext gc = getGraphicsContext2D();
-        scaleFinder.setScaleName(scaleType);
-        scale = scaleFinder.getScale();
+        currentScale = scaleType;
+//        scaleFinder.setScaleName(scaleType);
+//        scale = scaleFinder.getScale();
+        scale = (ArrayList) scaleDictionary.getScaleNotesFromNameAndRoot(currentScale, currentNote);
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imageGuitar, 0, 0, imageGuitar.getWidth(), imageGuitar.getHeight());
         updateFretboard(new Note(root));
@@ -215,7 +224,7 @@ public class GuitarCanvas extends Canvas implements EventHandler<MouseEvent> {
                         int x1 = xCoords_big.get(j - 1);
                         int x2 = xCoords_big.get(j);
                         int y1 = yCoords_big.get(i);
-                        String note = ScaleFinder.NOTE_NAMES[fretboard[i][j]];
+                        String note = ScaleDictionary.NOTE_NAMES[fretboard[i][j]];
                         if (note.length() >= 2)
                             note = note.substring(0, 2);
                         final Text text = new Text(note);

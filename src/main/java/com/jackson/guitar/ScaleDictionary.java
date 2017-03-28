@@ -9,8 +9,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by jackson on 3/22/2017.
@@ -18,6 +20,14 @@ import java.util.HashMap;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ScaleDictionary {
 
+    public static final int NOTE_MAPPING[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    public static final String NOTE_MAPPING_RELATIVE_NAMES[] = {"b9", "9", "m3", "M3", "4", "b5", "5", "#5", "6", "b7", "maj7"};
+    public static final String NOTE_NAMES[] = {"C", "C#/Db", "D", "Eb/D#", "E", "F", "F#/Gb", "G", "Ab/G#", "A", "Bb/A#", "B"};
+    private static HashMap masterList = new HashMap();
+    private int currentRoot = 0;
+    private String currentScaleName = "Ionian";
+    private int[] currentScale;
+    int index = 0;
     private ArrayList<Scale> scales = new ArrayList<>();
     private HashMap<String, Scale> scalesMap = new HashMap<>();
 
@@ -49,14 +59,37 @@ public class ScaleDictionary {
     }
 
     @JsonIgnore
-    public ArrayList<Integer> getScale(String name) {
+    public List<Integer> getScale(String name) {
         if( !scalesMap.containsKey(name) ) {
             return new ArrayList<>();
         }
         return scalesMap.get(name).getStepList();
     }
 
+    @JsonIgnore
+    public List<Note> getScaleNotesFromNameAndRoot(String scaleName, int root) {
+        List<Integer> stepArray = getScale(scaleName);
+        int current = root;
+        ArrayList<Note> list = new ArrayList<>();
+        for( int i = 0; i < stepArray.size(); i++) {
+            list.add(new Note(current % 12, i + 1));
+            current += stepArray.get(i);
+        }
+        return list;
+    }
 
+    public static ScaleDictionary createDict() {
+        ScaleDictionary scaleDictionary;
+        InputStream in = ScaleDictionary.class.getResourceAsStream("/scalesB.json");
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            scaleDictionary = mapper.readValue(in, ScaleDictionary.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return scaleDictionary;
+    }
 
     @JsonCreator
     public static ScaleDictionary Create(String json ) {
@@ -138,6 +171,8 @@ public class ScaleDictionary {
         public ArrayList<Integer> getStepList() {
             return stepList;
         }
+
+
 
         @Override
         public String toString() {

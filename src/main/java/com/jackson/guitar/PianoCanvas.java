@@ -25,14 +25,16 @@ public class PianoCanvas extends Canvas {
 
     private static Image imagePiano = new Image("piano_big.GIF");
 
-    private ScaleFinder scaleFinder = new ScaleFinder();
+//    private ScaleFinder scaleFinder = new ScaleFinder();
+    private ScaleDictionary scaleDictionary;
 
     private ArrayList scale;
 
-    private int root;
-
     private List<Integer> keyboard = new ArrayList<>(Arrays.asList(8, 20, 29, 41, 50, 71, 83, 92, 104, 113, 125, 134));
     private List<Integer> keyboard_big = new ArrayList<>();
+
+    private String currentScaleName = "Ionian";
+    private int currentRoot = 0;
 
     public PianoCanvas() {
 
@@ -40,7 +42,10 @@ public class PianoCanvas extends Canvas {
             keyboard_big.add(i * 2);
         }
 
-        scale = scaleFinder.getScale();
+        scaleDictionary = ScaleDictionary.createDict();
+
+//        scale = scaleFinder.getScale();
+        scale = (ArrayList) scaleDictionary.getScaleNotesFromNameAndRoot(currentScaleName, currentRoot);
         setWidth(imagePiano.getWidth());
         setHeight(imagePiano.getHeight());
         GraphicsContext gc = getGraphicsContext2D();
@@ -50,10 +55,11 @@ public class PianoCanvas extends Canvas {
     }
 
     public void setScaleRoot(int rootNote) {
-        root = rootNote;
+        currentRoot = rootNote;
         GraphicsContext gc = getGraphicsContext2D();
-        scaleFinder.setRoot(rootNote);
-        scale = scaleFinder.getScale();
+//        scaleFinder.setRoot(rootNote);
+//        scale = scaleFinder.getScale();
+        scale = (ArrayList) scaleDictionary.getScaleNotesFromNameAndRoot(currentScaleName, currentRoot);
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
         updateKeyboard(new Note(rootNote));
@@ -61,11 +67,13 @@ public class PianoCanvas extends Canvas {
 
     public void setScaleType(String scaleType) {
         GraphicsContext gc = getGraphicsContext2D();
-        scaleFinder.setScaleName(scaleType);
-        scale = scaleFinder.getScale();
+        currentScaleName = scaleType;
+//        scaleFinder.setScaleName(scaleType);
+//        scale = scaleFinder.getScale();
+        scale = (ArrayList) scaleDictionary.getScaleNotesFromNameAndRoot(currentScaleName, currentRoot);
         gc.clearRect(0, 0, getWidth(), getHeight());
         gc.drawImage(imagePiano, 0, 0, imagePiano.getWidth(), imagePiano.getHeight());
-        updateKeyboard(new Note(root));
+        updateKeyboard(new Note(currentRoot));
     }
 
     private void updateKeyboard(Note rootNote) {
@@ -87,7 +95,7 @@ public class PianoCanvas extends Canvas {
                 }
             }
             if (bNoteInScale) {
-                if (i == root)
+                if (i == currentRoot)
                     g.setFill(Color.RED);
                 else
                     g.setFill(Color.LIGHTBLUE);

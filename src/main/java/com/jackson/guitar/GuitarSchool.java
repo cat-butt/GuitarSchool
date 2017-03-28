@@ -3,17 +3,9 @@ package com.jackson.guitar;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -62,11 +54,12 @@ public class GuitarSchool extends Application {
     private GridPane addGridPane() {
         final ToggleGroup toggleGroup = new ToggleGroup();
         ArrayList<VBox> vBoxes = new ArrayList<>();
-        ScaleFinder scaleFinder = new ScaleFinder();
-        ArrayList<String> familyList = scaleFinder.getGroupNameList();
+        ScaleDictionary scaleDictionary = ScaleDictionary.createDict();
+
+        ArrayList<String> familyList = scaleDictionary.getFamilyList();
 
         GridPane gridPane = new GridPane();
-        gridPane.setGridLinesVisible(true);
+//        gridPane.setGridLinesVisible(true);
 
         int nCount = 0;
         for (String familyName : familyList) {
@@ -75,13 +68,14 @@ public class GuitarSchool extends Application {
             Label l = new Label(familyName);
             l.setFont(Font.font(18));
             vbox.getChildren().add(l);
-            for (String s : scaleFinder.getGroup(familyName)) {
-                RadioButton radioButton = new RadioButton(s);
-                radioButton.setFont(Font.font(14));
-                radioButton.setToggleGroup(toggleGroup);
-                radioButton.setGraphicTextGap(10.5);
-                radioButton.setSelected("Ionian".equals(s));
-                radioButtons.add(radioButton);
+            for (String s : scaleDictionary.getScaleListUnderFamily(familyName)) {
+                RadioButton rbn = new RadioButton(s);
+                rbn.setFont(Font.font(14));
+                rbn.setToggleGroup(toggleGroup);
+                rbn.setUserData(scaleDictionary.getScale(s));
+                rbn.setGraphicTextGap(10.5);
+                rbn.setSelected("Ionian".equals(s));
+                radioButtons.add(rbn);
             }
             vbox.getChildren().addAll(radioButtons);
             vbox.setSpacing(5.0);
@@ -93,17 +87,26 @@ public class GuitarSchool extends Application {
         ToggleGroup rootToggleGroup = new ToggleGroup();
         ArrayList<RadioButton> radioButtons = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            RadioButton rb = new RadioButton(ScaleFinder.NOTE_NAMES[i]);
+            RadioButton rb = new RadioButton(ScaleDictionary.NOTE_NAMES[i]);
             rb.setSelected(i == 0);
             rb.setFont(Font.font(14));
+            rb.setGraphicTextGap(10.5);
             rb.setToggleGroup(rootToggleGroup);
             rb.setUserData(i);
             radioButtons.add(rb);
         }
 
         vBox.getChildren().addAll(radioButtons);
-        gridPane.add(vBox, nCount, 1);
+        gridPane.add(vBox, nCount++, 1);
 
+        VBox vLabelBox = new VBox();
+        Label labelScaleName = new Label();
+        labelScaleName.setFont(Font.font(20));
+        Label labelScaleSteps = new Label();
+        labelScaleSteps.setFont(Font.font(20));
+        vLabelBox.getChildren().setAll(labelScaleName, labelScaleSteps);
+
+        gridPane.add(vLabelBox, nCount++, 1);
 
 
         rootToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -121,8 +124,14 @@ public class GuitarSchool extends Application {
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if (toggleGroup.getSelectedToggle() != null) {
-                    guitarCanvas.setScaleType(((Labeled) newValue).getText());
-                    pianoCanvas.setScaleType(((Labeled) newValue).getText());
+                    String s = ((Labeled) newValue).getText();
+                    guitarCanvas.setScaleType(s);
+                    pianoCanvas.setScaleType(s);
+                    labelScaleName.setText(s);
+                    ArrayList<Integer> steps = (ArrayList)newValue.getUserData();
+
+                    labelScaleSteps.setText(steps.toString());
+
                     System.out.println("oldValue: " + oldValue + "    newValue: " + newValue);
                 }
             }
